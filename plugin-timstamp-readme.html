@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    margin: 10px 13px 10px 13px;
+}
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+@media screen and (min-width: 768px) {
+    body {
+        width: 748px;
+        margin:10px auto;
+    }
+}
+</style>
+<title>seajs的时间戳插件plugin-timestamp.js介绍</title>
+</head>
+<body>
+<h1>seajs的时间戳插件plugin-timestamp.js介绍</h1>
+
+<h2>原理：</h2>
+
+<p>此插件重定义了seajs.pluginSDK.Module.<em>resolve，新的</em>resolve方法被调用时先调用原方法，然后根据返回的文件url在timestamp.js定义的对象中查找出该文件的最后更新时间，然后以参数的形式附加到文件的url后面。这样就实现了时间戳的功能。</p>
+
+<p>插件加载timestamp.js时，会在url后添加一个发布日期参数，此参数可通过seajs.config({public_date: &ldquo;201309280355&rdquo;})配置，我一般是将这一行语句放在一个名为pubdate.js的文件中，并将它放到插件之前加载。这样做的目的是不想每次都重新加载timestamp.js，因为每次加载只有一行的pubdate.js更小。</p>
+
+<p>如果是combo的url，如www.abc.com/??a.js,b.js，那么会选择a.js和b.js之中更新时间更晚的那个作为它们的时间戳。</p>
+
+<h2>使用示例：</h2>
+
+<h3>page.aspx</h3>
+
+<pre><code>
+&lt;script src='http://res.chukou1.com/vendor/seajs/1.2.1/sea.js' >&lt;/script>
+&lt;script src='http://res.chukou1.com/seajs_config.js>&lt;/script>
+&lt;script src='http://res.chukou1.com/pubdate.js?t=<%= 产生随机数的后台代码  %>' >&lt;/script>
+&lt;script src='http://res.chukou1.com/vendor/seajs/1.2.1/plugin-timestamp.js' >&lt;/script>
+</code></pre>
+
+
+<h3>pubdate.js</h3>
+
+<pre><code>
+seajs.config({
+    "publish_date": "201209270135"
+});
+</code></pre>
+
+
+<h3>timestamp.js</h3>
+
+<pre><code>
+define("timestamp",function(require, exports, module) {
+    module.exports = {
+        "vendor": {
+            "es5-shim": {
+                "1.2.10": {
+                    "es5-shim.js": "0921154038"
+                 }
+             }
+         }
+     }
+});
+</code></pre>
+
+
+<h2>生成时间戳文件：</h2>
+
+<ol>
+<li>安装ruby运行环境，</li>
+<li>安装生成时间戳的gem
+
+<ul>
+<li>gem install file-timestamp</li>
+</ul>
+</li>
+<li>查看帮助
+
+<ul>
+<li>timestamp &ndash;help</li>
+</ul>
+</li>
+<li>输出当前目录的时间戳信息并保存到timestamp.js中
+
+<ul>
+<li>timestamp  . &ndash;seajs > timestamp.js  #</li>
+</ul>
+</li>
+</ol>
+
+</body>
+</html>
