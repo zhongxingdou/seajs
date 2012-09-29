@@ -90,7 +90,7 @@ define("seajs/plugin-timestamp", function(require) {
 		//filter this plugin in preload
 		var _newPreload = [];
 		var m;
-		while(m = _preload.pop()){
+		while(m = _preload.shift()){
 			if(m !=  pluginId){
 				_newPreload.push(m);
 			}
