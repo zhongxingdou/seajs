@@ -11,8 +11,6 @@ define("seajs/plugin-timestamp", function(require) {
     var timestamp = require("timestamp");
 
     // Helpers
-    // -------
-    //var Module = seajs.pluginSDK.Module;
     function extendResolve() {
         var Module = seajs.pluginSDK.Module;
         var _resolve = Module._resolve;
@@ -84,7 +82,22 @@ define("seajs/plugin-timestamp", function(require) {
 (function() {
     var _preload = seajs.pluginSDK.config.preload;
 
-    seajs.pluginSDK.config.preload = ["seajs/plugin-timestamp"];
+	var pluginId = "seajs/plugin-timestamp"
 
-	seajs.use(_preload);
+	seajs.pluginSDK.config.preload = [pluginId];
+
+	if(_preload.length){
+		//filter this plugin in preload
+		var _newPreload = [];
+		var m;
+		while(m = _preload.pop()){
+			if(m !=  pluginId){
+				_newPreload.push(m);
+			}
+		}
+
+		if(_newPreload.length){
+			seajs.use(_newPreload);
+		}
+	}
 })();
