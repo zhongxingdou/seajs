@@ -192,7 +192,13 @@ define("timestamp",function(require, exports, module) {
 <li>输出当前目录的时间戳信息并保存到timestamp.js中
 
 <ul>
-<li>timestamp  . &ndash;seajs > timestamp.js  #</li>
+<li>timestamp  . &ndash;seajs > timestamp.js</li>
+</ul>
+</li>
+<li>生成pubdate.js，以下语句只在mac osx下测试过
+
+<ul>
+<li>date &ldquo;+seajs.config({&lsquo;publish_date&rsquo;: &lsquo;%Y%m%d%H%M%S&rsquo;});&rdquo; > pubdate.js</li>
 </ul>
 </li>
 </ol>

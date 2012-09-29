@@ -47,7 +47,9 @@ define("timestamp",function(require, exports, module) {
 3. 查看帮助 
    * timestamp --help
 4. 输出当前目录的时间戳信息并保存到timestamp.js中
-   * timestamp  . --seajs > timestamp.js  #
+   * timestamp  . --seajs > timestamp.js
+5. 生成pubdate.js，以下语句只在mac osx下测试过
+   * date "+seajs.config({'publish_date': '%Y%m%d%H%M%S'});" > pubdate.js
 
 
 
